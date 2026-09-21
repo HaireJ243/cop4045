@@ -3,70 +3,38 @@ import matplotlib.pyplot as plt
 
 # function to plot mathematical function
 def plot_function(fun_str, domain, ns):
-
-    # min and max from tuple
-    x_min = domain[0]
+    
+    x_min = domain[0]# min and max from tuple
     x_max = domain[1]
+    x_values = []#list for x values
+    y_values = []#list for y values
 
-    #list for x values
-    x_values = []
+    point = (x_max - x_min) / (ns - 1)# distance between points on graph
+    x = x_min# start x at min
 
-    #list for y values
-    y_values = []
-
-    # distance between points on graph
-    point = (x_max - x_min) / (ns - 1)
-
-    # start x at min
-    x = x_min
-
-    # add values to x_values
-    for i in range(ns):
-
+    for i in range(ns):# add values to x_values
         x_values.append(x)
+        x = x + point#move to next point on graph
+    
+    for x in x_values:# calculate y values
+        y = eval(fun_str)# evaluate using current x
+        y_values.append(y)#add y values to y_values
 
-        #move to next point on graph
-        x = x + point
-
-    # calculate y values
-    for x in x_values:
-
-        # evaluate using current x
-        y = eval(fun_str)
-
-        #add y values to y_values
-        y_values.append(y)
-
-    # table heading
-    print()
+    print() # table heading
     print("     x       y")
 
-    # print x and y valuess
-    for i in range(ns):
-
+    for i in range(ns):# print x and y valuess
         print("%10.4f %10.4f" % (x_values[i], y_values[i]))
 
-    # plot function
-    plt.plot(x_values, y_values)
-
-    # axis labels
-    plt.xlabel("x")
+    plt.plot(x_values, y_values)# plot function
+    plt.xlabel("x")# axis labels
     plt.ylabel("y")
+    plt.title(fun_str)#plot title   
+    plt.show()#show plot
 
-    #plot title
-    plt.title(fun_str)
-
-    #show plot
-    plt.show()
-
-#ask user for function
-fun_str = input("Enter function with variable x: ")
-
-#ask for # of samples
-ns = int(input("Enter number of samples: "))
-
-#ask for x min and max
-x_min = float(input("Enter x min: "))
+fun_str = input("Enter function with variable x: ")#ask user for function
+ns = int(input("Enter number of samples: "))#ask for # of samples
+x_min = float(input("Enter x min: "))#ask for x min and max
 x_max = float(input("Enter x max: ")) 
 
 #create domain tuple

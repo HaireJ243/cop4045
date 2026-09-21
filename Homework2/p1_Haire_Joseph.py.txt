@@ -1,0 +1,89 @@
+1. def line_number(f1: str, f2: str) -> None:
+2.     """Reads one file and writes its lines, with line numbers, to another file"""
+3. 
+4.     try:
+5.         with open(f1, "r") as file: #open file to read from
+6.             with open(f2, "w") as new_file: # open file to write to
+7. 
+8.                 line_num = 1
+9.                 for line in file:
+10.                     new_file.write(str(line_num) + ". " + line) #write numbered lines to new file
+11.                     line_num += 1
+12. 
+13.     except:
+14.         print("An error occurred attempting to access files.")
+15.         raise
+16. 
+17. def parse_functions(f3: str) -> tuple:
+18.     """Reads a python file, and gathers information on all functions"""
+19. 
+20.     try:
+21.         with open(f3, "r") as file: #open file to read from
+22. 
+23.             lines     = file.readlines() #read all lines into a list
+24.             functions = [] #list to hold function information
+25.             
+26.             for i in range(len(lines)):
+27.                 if lines[i].startswith("def "):
+28.                     line          = lines[i]
+29.                     function_code = lines[i]
+30.                     
+31. 
+32.                     #find function name
+33.                     start         = 4
+34.                     end           = line.find("(")
+35.                     function_name = line[start:end]
+36. 
+37.                     #find function arguments
+38.                     close_parenthesis = line.find(")")
+39.                     arguments         = line[end + 1: close_parenthesis] 
+40. 
+41.                     #find function body
+42.                     j = i + 1
+43.                     while j < len(lines):
+44.                         if lines[j].strip() == "": #skip blank lines
+45.                             j += 1
+46.                             continue
+47. 
+48.                         if not lines[j].startswith(" "):
+49.                             if not lines[j].startswith("\t"):
+50.                                 break
+51. 
+52.                         if lines[j].strip().startswith("#"): #skip comments
+53.                             j += 1
+54.                             continue
+55. 
+56.                         current_line = lines[j]
+57. 
+58.                         if "#" in current_line: #remove comments
+59.                             comment_start = current_line.find("#")
+60.                             current_line = current_line[:comment_start]
+61.                             current_line = current_line.rstrip()
+62.                             current_line = current_line + "\n"
+63. 
+64.                         function_code += current_line
+65.                         j += 1
+66. 
+67.                     function_info = (function_name, i + 1, arguments, function_code) # place information into a tuple
+68.                     functions.append(function_info)
+69.                 
+70. 
+71.             functions.sort() #sort functions by function name
+72.             sorted_functions = []
+73. 
+74.             for item in functions: #rearrange for assignment specifications
+75.                 new_item = (item[1], item[0], item[2], item[3])
+76.                 sorted_functions.append(new_item)
+77. 
+78.             return tuple(sorted_functions)
+79. 
+80.     except:
+81.         print("An error occurred while parsing the file.")
+82.         raise
+83. 
+84. def main():
+85. 
+86.     line_number("p1_Haire_Joseph.py", "p1_Haire_Joseph.py.txt")
+87.     print(parse_functions("p1_Haire_Joseph.py"))
+88. 
+89. main()
